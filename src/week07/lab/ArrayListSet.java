@@ -9,12 +9,12 @@ import java.util.*;
  */
 public class ArrayListSet<E> implements Set<E> {
 	
-	
+	private ArrayList<E> list;
 	/**
 	 * Default constructor builds an empty set
 	 */
 	public ArrayListSet() {
-		// To be completed
+		list = new ArrayList<E>();
 	}
 
 	/**
@@ -22,59 +22,99 @@ public class ArrayListSet<E> implements Set<E> {
 	 * @param arrayListSet
 	 */
 	public ArrayListSet(ArrayListSet<E> arrayListSet) {
-		// To be completed
+		list = new ArrayList<E>();
+		for (E obj : arrayListSet) {
+			list.add(obj);
+		}
 	}
 
 
 	@Override
 	public void add(E e) {
-		// To be completed	
+		if(contains(e)) {
+			return;
+		} else {
+			list.add(e);
+		}
+	
 	}
 
 	@Override
 	public void remove(E e) {
-		// To be completed
+		list.remove(e);
 	}
 
 	@Override
 	public Set<E> union(Set<E> secondSet) {
-		// To be completed
-		return null;
+		Set<E> newSet = new ArrayListSet<E>();
+		for (E item : this) {
+			newSet.add(item);
+		}
+		for (E item : secondSet) {
+			newSet.add(item);
+		}
+		return newSet;
 	}
 
 		
 	@Override
 	public Set<E> intersection(Set<E> secondSet) {
-		// To be completed
-		return null;
+		Set<E> newSet = new ArrayListSet<E>();
+		for (E item : secondSet) {
+			if (this.contains(item)) {
+				newSet.add(item);
+			}
+		}
+		return newSet;
 	}
 
 	@Override
 	public boolean contains(Object e) {
-		// To be completed
-		return true;
+		for(Object obj : list) {
+			if(obj.equals(e)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		return null;
+		return list.iterator();
 	}
 	
 	@Override
 	public String toString() {
-		// To be completed
-		return null;
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for(E e : this) {
+			sb.append(e.toString());
+			if(this.iterator().hasNext()) {
+				sb.append(", ");
+			}
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		return false;
+		if (o == this) return true;
+		if (o == null) return false;
+		if (!(o instanceof Set<?>)) return false;
+		
+		Set<?> other = (Set<?>) o;
+		if (this.size() != other.size()) return false;
+		
+		for (Object obj : other) {
+			if(this.contains(obj) == false) return false;
+		}
+		return true;
 	}
 
 	
 	@Override
-	public boolean subset(Set<E> secondSet)
-	{
+	public boolean subset(Set<E> secondSet) {
 		for (E e : this)					// can do this since Set<E> implements Iterable<E>!!
 			if (!secondSet.contains(e))
 				return false;
@@ -83,6 +123,6 @@ public class ArrayListSet<E> implements Set<E> {
 		
 	@Override
 	public int size() {
-		return 0;
+		return list.size();
 	}
 }
